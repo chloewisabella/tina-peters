@@ -504,6 +504,11 @@ body {
   .home-series { padding: 48px 1.25rem 72px; }
   .article-wrap { padding: 0 1.25rem; }
 }
+@media (max-width: 700px) {
+  .home-hero > div {
+    grid-template-columns: 1fr !important;
+  }
+}
 /* ─── CITATION LINKS ─── */
 .prose a {
   color: inherit;
