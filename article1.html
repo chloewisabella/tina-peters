@@ -78,15 +78,125 @@
 
       <!-- PLACEHOLDER: Timeline embed -->
       <div class="embed-block">
-        <div class="embed-label-bar">
-          &#9632;&nbsp; Interactive Timeline
-        </div>
-        <div class="embed-content">
-          <div class="embed-title">Mesa County, 2018–2026</div>
-          <p class="embed-desc">The full chronology of Peters' tenure, indictment, trial, and release — navigable by year. <em>(Interactive coming soon)</em></p>
-        </div>
-      </div>
+  <div class="embed-label-bar">&#9632;&nbsp; Interactive Timeline</div>
+  <div style="padding: 20px;">
 
+    <style>
+      .tl-years { display: flex; align-items: center; gap: 0; border: 1px solid #D8D4CC; border-radius: 4px; overflow: hidden; margin-bottom: 24px; }
+      .tl-yr { flex: 1; padding: 10px 4px; text-align: center; font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 400; color: #9C9791; cursor: pointer; border-right: 1px solid #D8D4CC; background: #F5F2EC; transition: background 0.15s, color 0.15s; user-select: none; }
+      .tl-yr:last-child { border-right: none; }
+      .tl-yr:hover { background: #EDEAE2; color: #1C1917; }
+      .tl-yr.tl-active { background: #1C1917; color: #F5F2EC; font-weight: 500; }
+      .tl-yr.tl-pivot { border-top: 2px solid #7A1F1F; }
+      .tl-yr.tl-pivot.tl-active { background: #7A1F1F; }
+      .tl-content { min-height: 200px; }
+      .tl-panel { display: none; }
+      .tl-panel.tl-active { display: block; }
+      .tl-year-label { font-size: 11px; font-family: 'DM Sans', sans-serif; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #9C9791; margin-bottom: 16px; }
+      .tl-event { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid #D8D4CC; }
+      .tl-event:last-child { border-bottom: none; }
+      .tl-month { font-size: 11px; font-family: 'DM Sans', sans-serif; font-weight: 500; letter-spacing: 0.06em; color: #9C9791; min-width: 44px; padding-top: 2px; text-transform: uppercase; }
+      .tl-dot { width: 7px; height: 7px; border-radius: 50%; background: #D8D4CC; margin-top: 6px; flex-shrink: 0; }
+      .tl-dot.tl-red { background: #7A1F1F; }
+      .tl-text { font-size: 15px; line-height: 1.6; color: #1C1917; font-family: 'Libre Baskerville', Georgia, serif; }
+      .tl-tag { display: inline-block; font-size: 10px; font-family: 'DM Sans', sans-serif; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; margin-left: 6px; vertical-align: middle; }
+      .tl-tag.crime { background: #FCEBEB; color: #A32D2D; }
+      .tl-tag.legal { background: #E6F1FB; color: #185FA5; }
+      .tl-tag.political { background: #F1EFE8; color: #5F5E5A; }
+    </style>
+
+    <div class="tl-years" id="tp-tl-years"></div>
+    <div class="tl-content" id="tp-tl-content"></div>
+
+    <script>
+    (function() {
+      var data = {
+        2018: [
+          { month: "Jun", text: "Peters wins Republican primary for Mesa County Clerk, defeating Bobbie Gross — a 10-year veteran of the office — with 53% of the vote.", tag: null },
+          { month: "Nov", text: "Peters elected Clerk and Recorder. Her campaign platform: reopen shuttered DMV satellite offices.", tag: "political" }
+        ],
+        2019: [
+          { month: "Jan", text: "Peters takes office. Outgoing Clerk Sheila Rae attempts to hand off institutional knowledge. Peters shows little interest.", tag: null },
+          { month: "Jun", text: "Mesa County reopens a DMV satellite office in Fruita — Peters' signature campaign promise fulfilled.", tag: null },
+          { month: "Nov", text: "574 ballots from a municipal election are placed in a drop box outside the clerk's office. No one collects them.", tag: "crime" }
+        ],
+        2020: [
+          { month: "Feb", text: "Staff preparing for the presidential primary discover the 574 uncounted ballots — still in the box, in the parking lot, months later. Peters calls it human error.", tag: null },
+          { month: "Apr", text: "A recall campaign launches. Organizers need 12,129 signatures. It is 2020. COVID is spreading.", tag: "political" },
+          { month: "Aug", text: "The recall fails — about 2,000 signatures short. Peters keeps her job.", tag: "political" },
+          { month: "Nov", text: "Presidential election. Trump loses. Peters signs documents certifying Mesa County's results contain no discrepancies.", tag: null }
+        ],
+        2021: [
+          { month: "Apr", text: "April 23: Douglas Frank — paid by Mike Lindell — meets with Peters and Sherronna Bishop. Prosecutors call this 'the beginning of the conspiracy.'", tag: "crime", red: true },
+          { month: "May", text: "Peters orders surveillance cameras on voting machines turned off. She arranges fake credentials for Gerald Wood, then uses them to smuggle Conan Hayes into the trusted build.", tag: "crime", red: true },
+          { month: "May", text: "Conan Hayes copies the hard drives of Mesa County's Dominion voting machines. The data ends up online.", tag: "crime", red: true },
+          { month: "Aug", text: "Peters flies to Mike Lindell's cyber symposium in South Dakota. Her office is raided while she is in the air.", tag: "crime" },
+          { month: "Sep", text: "Secretary of State Griswold suspends Peters from election duties. A legal battle erupts over who appoints her replacement.", tag: "legal" },
+          { month: "Oct", text: "Peters' divorce from Tom Peters is finalized. He files a lawsuit alleging she used a fraudulent Power of Attorney to transfer ownership of his home to herself.", tag: "legal" }
+        ],
+        2022: [
+          { month: "Jan", text: "Peters files for reelection as Mesa County Clerk. One month later, she drops the bid and announces a run for Colorado Secretary of State.", tag: "political" },
+          { month: "Mar", text: "Peters is indicted on 10 charges related to the security breach.", tag: "legal" },
+          { month: "Jun", text: "Peters loses the Republican primary for Secretary of State with 29% of the vote. She says she doesn't accept the result.", tag: "political" },
+          { month: "Jul", text: "Peters pays $256,000 for a manual recount. She gains 13 votes. She still has 29%. She still loses.", tag: "political" },
+          { month: "Aug", text: "Deputy Clerk Belinda Knisley takes a plea deal, agreeing to testify against Peters.", tag: "legal" },
+          { month: "Nov", text: "Sandra Brown, another deputy, takes a plea deal and agrees to testify.", tag: "legal" }
+        ],
+        2023: [
+          { month: "Mar", text: "Peters convicted of misdemeanor obstruction for recording a court proceeding on her iPad.", tag: "legal" },
+          { month: "Oct", text: "Fined $15,400 for Fair Campaign Practice Act violations.", tag: "legal" },
+          { month: "Dec", text: "Tom Peters dies. He and Tina were married for 36 years.", tag: null }
+        ],
+        2024: [
+          { month: "Jul", text: "Criminal trial begins in Grand Junction. Knisley and Brown testify against Peters. Peters does not take the stand.", tag: "legal" },
+          { month: "Aug", text: "Jury convicts Peters on 7 of 10 charges — four felonies. The following morning, she appears on Steve Bannon's War Room podcast.", tag: "legal", red: true },
+          { month: "Oct", text: "Judge Barrett sentences Peters to 9 years in prison. 'You are no hero. You're a charlatan.' She is handcuffed and taken into custody immediately.", tag: "legal", red: true }
+        ],
+        2025: [
+          { month: "Dec", text: "President Trump announces he has pardoned Peters. Legal experts note that presidential pardons do not apply to state convictions. The pardon is legally meaningless.", tag: "political" }
+        ],
+        2026: [
+          { month: "Apr", text: "Colorado Court of Appeals upholds Peters' conviction 3–0 but orders resentencing, finding that Judge Barrett improperly punished her for protected speech.", tag: "legal" },
+          { month: "May", text: "Governor Polis commutes Peters' sentence. She reportedly admitted she 'made a mistake.' Trump posts 'FREE TINA.' Peters is eligible for parole June 1, 2026.", tag: "political", red: true }
+        ]
+      };
+
+      var pivotYears = [2021, 2024];
+      var yearsEl = document.getElementById('tp-tl-years');
+      var contentEl = document.getElementById('tp-tl-content');
+      var years = Object.keys(data).map(Number);
+
+      years.forEach(function(yr) {
+        var btn = document.createElement('div');
+        btn.className = 'tl-yr' + (pivotYears.indexOf(yr) > -1 ? ' tl-pivot' : '');
+        btn.textContent = yr;
+        btn.dataset.year = yr;
+        btn.addEventListener('click', function() { activate(yr); });
+        yearsEl.appendChild(btn);
+
+        var panel = document.createElement('div');
+        panel.className = 'tl-panel';
+        panel.id = 'tp-panel-' + yr;
+        panel.innerHTML = '<div class="tl-year-label">' + yr + '</div>' +
+          data[yr].map(function(e) {
+            return '<div class="tl-event"><div class="tl-month">' + e.month + '</div><div class="tl-dot' + (e.red ? ' tl-red' : '') + '"></div><div class="tl-text">' + e.text + (e.tag ? '<span class="tl-tag ' + e.tag + '">' + e.tag + '</span>' : '') + '</div></div>';
+          }).join('');
+        contentEl.appendChild(panel);
+      });
+
+      function activate(yr) {
+        var btns = yearsEl.querySelectorAll('.tl-yr');
+        btns.forEach(function(b) { b.classList.toggle('tl-active', parseInt(b.dataset.year) === yr); });
+        var panels = contentEl.querySelectorAll('.tl-panel');
+        panels.forEach(function(p) { p.classList.toggle('tl-active', p.id === 'tp-panel-' + yr); });
+      }
+
+      activate(2021);
+    })();
+    </script>
+
+  </div>
+</div>
 
       <!-- SECTION II -->
       <div class="section-label">
