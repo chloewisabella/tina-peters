@@ -87,7 +87,7 @@ body {
 
 /* ─── ARTICLE HEADER ─── */
 .article-header {
-  padding: 72px 0 56px;
+  padding: 72px 0 0;
   border-bottom: 1px solid var(--border);
 }
 .article-kicker {
@@ -167,7 +167,7 @@ body {
 
 /* ─── PROSE ─── */
 .prose {
-  padding: 56px 0;
+  padding: 32px 0 56px;
 }
 .prose p {
   margin-bottom: 1.6em;
